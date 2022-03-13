@@ -1,4 +1,4 @@
-package com.example.demo.fileLoad;
+package com.example.demo.test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,13 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.alibaba.fastjson.JSON;
+
 
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 
-import com.example.demo.entity.Books;
-import com.example.demo.entity.Computer;
-import com.example.demo.entity.Computer2;
 
 public class copyTest {
 
@@ -160,6 +159,14 @@ public class copyTest {
 		computer2_4.getCompany().append("公司");
 		System.out.println("==computer2_4=="+computer2_4.toString());
 		System.out.println("==computer2_3=="+computer2_3.toString());
+		//4.json流深复制
+		Computer2 computer2_5 = new Computer2("peter", 7895.25, new StringBuilder("lenovo"),
+				new Books(2, "产品使用说明书", 25.66, 50, 5));
+		Computer2 computer2_6 = (Computer2) deepCopy(computer2_5,Computer2.class);
+		computer2_6.getCompany().append("公司");
+		System.out.println("==computer2_5=="+computer2_5.toString());
+		System.out.println("==computer2_6=="+computer2_6.toString());
+
 	}
 	
 	
@@ -380,7 +387,12 @@ public class copyTest {
 		}
 		return clonedObj;
 	}
-	
+
+	//json进行深复制
+	public static  Object deepCopy(Object obj,Class cls){
+		String json = JSON.toJSONString(obj);
+		return JSON.parseObject(json, cls);
+	}
 	@Test
 	public void test() {
 
